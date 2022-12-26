@@ -15,7 +15,6 @@ const AnalogStick = ({
       onPanResponderMove: (evt, gestureState) => {
         // Update the position of the stick based on the gesture data
         const { dx, dy } = gestureState
-        moveCharacter(dx, dy)
         setStickPosition({ x: dx, y: dy })
       },
       onPanResponderRelease: () => {
