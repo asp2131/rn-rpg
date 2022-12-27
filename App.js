@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-import { StatusBar } from 'expo-status-bar'
+import Landing from './src/screens/Landing'
 import {
   StyleSheet,
   Text,
@@ -30,6 +30,7 @@ function App({ navigation }) {
   const [objectName, setObjectName] = useState('')
   const [showScreen1, setShowScreen1] = useState(true)
   const [playground, setPlayground] = useState('bg1')
+  const [showScreen2, setShowScreen2] = useState(false)
   const animation = useRef(null)
 
   useEffect(() => {
@@ -73,14 +74,24 @@ function App({ navigation }) {
       // Speech.speak('Train')
       // setModalVisible(true)
     } else if (playground === 'bg1' && adjustedX > 238) {
-      Speech.speak('Here we go')
+      // Speech.speak('Here we go')
       setPlayground('bg2')
       setShowScreen1(false)
       // navigation.navigate('Trace')
     } else if (playground === 'bg2' && adjustedX < -70) {
-      Speech.speak('Woo hoo')
+      // Speech.speak('Woo hoo')
       setPlayground('bg1')
       setShowScreen1(true)
+    } else if (playground === 'bg2' && adjustedX > 238) {
+      // Speech.speak('Woo hoo')
+      setPlayground('bg3')
+      setShowScreen1(false)
+      setShowScreen2(true)
+    } else if (playground === 'bg3' && adjustedX < -70) {
+      // Speech.speak('Woo hoo')
+      setPlayground('bg2')
+      setShowScreen1(false)
+      setShowScreen2(false)
     } else {
       setModalVisible(false)
     }
@@ -106,6 +117,10 @@ function App({ navigation }) {
     >
       <>
         {showScreen1 ? (
+          <>
+            <Image source={require('./assets/bg4.png')} style={styles.image} />
+          </>
+        ) : showScreen2 ? (
           <>
             <Image source={require('./assets/bg5.png')} style={styles.image} />
           </>
@@ -187,7 +202,14 @@ const Stack = createStackNavigator()
 export default function Router() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Landing">
+        <Stack.Screen
+          name="Landing"
+          component={Landing}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="Home"
           component={App}

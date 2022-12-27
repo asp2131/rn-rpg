@@ -18,7 +18,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
   const monsterRef = useRef(null)
 
   useEffect(() => {
-    console.log('isMoving', isMoving)
+    // console.log('isMoving', isMoving)
   }, [isMoving])
 
   const onPress = () => {
@@ -28,7 +28,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
   }
 
   const tweenSprite = () => {
-    const coords = this.refs.monsterRef.getCoordinates()
+    const coords = monsterRef.getCoordinates()
     const location = [0, 100, 200, 300, 400, 500]
     setTweenOptions(
       {
