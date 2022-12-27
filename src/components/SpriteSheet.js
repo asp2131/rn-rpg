@@ -14,24 +14,16 @@ import monsterSprite from './sprites/monster/monsterSprite'
 export default function AnimatedSpriteExample({ isMoving }) {
   const [animationType, setAnimationType] = useState('WALK')
   const [tweenOptions, setTweenOptions] = useState({})
-  const [isWalking, setIsWalking] = useState(true)
+  const [isWalking, setIsWalking] = useState(false)
   const monsterRef = useRef(null)
 
-  // useEffect(() => {
-  //   if (!isMoving) {
-  //     console.log("shouldn't move", isMoving)
-  //     setIsWalking(false)
-  //   }
-  //   if (isMoving) {
-  //     setIsWalking(true)
-  //   }
-  //   console.log('should move', isMoving)
-  // }, [isMoving, isWalking])
+  useEffect(() => {
+    console.log('isMoving', isMoving)
+  }, [isMoving])
 
   const onPress = () => {
     const animation = sample(monsterSprite.animationTypes)
     // console.log('animation', animation) // eslint-disable-line no-console
-    debugger
     setAnimationType('WALK')
   }
 
@@ -49,7 +41,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
       },
 
       () => {
-        this.refs.monsterRef.startTween()
+        monsterRef.startTween()
       }
     )
   }
@@ -60,7 +52,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
         ref={monsterRef}
         sprite={monsterSprite}
         animationFrameIndex={monsterSprite.animationIndex(animationType)}
-        loopAnimation={isWalking}
+        loopAnimation={isMoving}
         coordinates={{
           top: -200,
           left: -100,
@@ -74,6 +66,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
         tweenStart={'fromMethod'}
         onPress={() => {
           onPress()
+          tweenSprite()
         }}
       />
     </View>

@@ -47,7 +47,7 @@ function App({ navigation }) {
 
   const moveCharacter = (analogX, analogY) => {
     setIsMoving(true)
-    console.log(analogX - 300, analogY - 300)
+    // console.log(analogX - 300, analogY - 300)
     const adjustedX = analogX - 300
     const adjustedY = analogY - 300
 
@@ -59,8 +59,8 @@ function App({ navigation }) {
       playground === 'bg1'
     ) {
       setObjectName('Tree')
-      Speech.speak('Tree')
-      setModalVisible(true)
+      // Speech.speak('Tree')
+      // setModalVisible(true)
     } else if (
       adjustedX >= 50 &&
       adjustedX <= 95 &&
@@ -69,13 +69,13 @@ function App({ navigation }) {
       playground === 'bg1'
     ) {
       setObjectName('Train')
-      Speech.speak('Train')
-      setModalVisible(true)
-    } else if (playground === 'bg1' && adjustedX > 198) {
+      // Speech.speak('Train')
+      // setModalVisible(true)
+    } else if (playground === 'bg1' && adjustedX > 238) {
       Speech.speak('Here we go')
       setPlayground('bg2')
       setShowScreen1(false)
-      navigation.navigate('Trace')
+      // navigation.navigate('Trace')
     } else if (playground === 'bg2' && adjustedX < -70) {
       Speech.speak('Woo hoo')
       setPlayground('bg1')
@@ -91,9 +91,9 @@ function App({ navigation }) {
       y: adjustedY,
     })
 
-    // setTimeout(() => {
-    //   setIsMoving(false)
-    // }, 2000)
+    setTimeout(() => {
+      setIsMoving(false)
+    }, 800)
   }
 
   return (
@@ -106,11 +106,11 @@ function App({ navigation }) {
       <>
         {showScreen1 ? (
           <>
-            <Image source={require('./assets/bg2.png')} style={styles.image} />
+            <Image source={require('./assets/bg6.png')} style={styles.image} />
           </>
         ) : (
           <>
-            <Image source={require('./assets/bg1.png')} style={styles.image} />
+            <Image source={require('./assets/bg5.png')} style={styles.image} />
           </>
         )}
       </>
@@ -133,21 +133,6 @@ function App({ navigation }) {
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
         />
-
-        {/* <Motion.View
-          style={{ width: 50, height: 50, backgroundColor: 'red' }}
-          initial={{ y: -50 }}
-          animate={{ x: characterPosition.x, y: characterPosition.y }}
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ y: 20 }}
-          transition={{ type: 'spring' }}
-        /> */}
-        {/* <AxisPad
-          setIsMoving={setIsMoving}
-          moveCharacter={moveCharacter}
-          stickPosition={stickPosition}
-          setStickPosition={setStickPosition}
-        /> */}
       </View>
     </View>
   )
@@ -161,10 +146,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: width * 1.8,
-    height: height,
+    width: width * 2,
+    height: height * 1.2,
     position: 'absolute',
     zIndex: 0,
+    // aspectRatio: 6,
     // width: null,
   },
   screen1: {
@@ -187,7 +173,13 @@ export default function Router() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={App} />
+        <Stack.Screen
+          name="Home"
+          component={App}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name="Trace">
           {(props) => (
             <Trace
