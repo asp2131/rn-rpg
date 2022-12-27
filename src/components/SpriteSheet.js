@@ -8,7 +8,7 @@ import React, { Component, useState, useRef, useEffect } from 'react'
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native'
 import sample from 'lodash.sample'
 
-import AnimatedSprite from 'react-native-animated-sprite'
+import AnimatedSprite from '@asp2131/rn-anime-sprite'
 import monsterSprite from './sprites/monster/monsterSprite'
 
 export default function AnimatedSpriteExample({ isMoving }) {

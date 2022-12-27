@@ -13,6 +13,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@asp2131/rn-anime-sprite": "^1.0.0",
     "@benjeau/react-native-draw": "^0.8.3",
     "@benjeau/react-native-draw-extras": "^0.2.2",
     "@legendapp/motion": "^2.2.0",
@@ -27,6 +28,7 @@
     "expo-screen-orientation": "~5.0.1",
     "expo-speech": "~11.0.0",
     "expo-status-bar": "~1.4.2",
+    "lottie-react-native": "^5.1.4",
     "patch-package": "^6.5.0",
     "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.8.1",

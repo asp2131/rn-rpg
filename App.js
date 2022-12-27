@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { StatusBar } from 'expo-status-bar'
@@ -8,11 +8,10 @@ import {
   View,
   Dimensions,
   Image,
-  Animate,
+  Pressable,
 } from 'react-native'
 import * as ScreenOrientation from 'expo-screen-orientation'
-import Forest from './assets/trees.svg'
-import AxisPad from './src/components/Axis'
+import LottieView from 'lottie-react-native'
 import Character from './src/components/Character'
 import Modal from './src/components/Modal'
 import Trace from './src/screens/Trace'
@@ -31,8 +30,10 @@ function App({ navigation }) {
   const [objectName, setObjectName] = useState('')
   const [showScreen1, setShowScreen1] = useState(true)
   const [playground, setPlayground] = useState('bg1')
+  const animation = useRef(null)
 
   useEffect(() => {
+    showScreen1 ? animation.current.play() : null
     // changeScreenOrientation()
     // console.log('isMoving', isMoving)
     // setCharacterPosition({ x: movementPosition.x, y: movementPosition.y })
@@ -106,14 +107,28 @@ function App({ navigation }) {
       <>
         {showScreen1 ? (
           <>
-            <Image source={require('./assets/bg6.png')} style={styles.image} />
+            <Image source={require('./assets/bg5.png')} style={styles.image} />
           </>
         ) : (
           <>
-            <Image source={require('./assets/bg5.png')} style={styles.image} />
+            <Image source={require('./assets/bg6.png')} style={styles.image} />
           </>
         )}
       </>
+      {showScreen1 ? (
+        <Pressable onPress={() => navigation.navigate('Trace')}>
+          <LottieView
+            autoPlay
+            ref={animation}
+            style={{
+              width: 150,
+              height: 150,
+            }}
+            // Find more Lottie files at https://lottiefiles.com/featured
+            source={require('./assets/woman_painting.json')}
+          />
+        </Pressable>
+      ) : null}
       <Character
         isMoving={isMoving}
         x={characterPosition.x}
