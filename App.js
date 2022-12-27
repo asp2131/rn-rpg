@@ -75,13 +75,13 @@ function App({ navigation }) {
       Speech.speak('Here we go')
       setPlayground('bg2')
       setShowScreen1(false)
+      navigation.navigate('Trace')
     } else if (playground === 'bg2' && adjustedX < -70) {
       Speech.speak('Woo hoo')
       setPlayground('bg1')
       setShowScreen1(true)
     } else {
       setModalVisible(false)
-      // navigation.navigate('Trace')
     }
 
     //e.nativeEvent.locationX
@@ -188,7 +188,17 @@ export default function Router() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={App} />
-        <Stack.Screen name="Trace" component={Trace} />
+        <Stack.Screen name="Trace">
+          {(props) => (
+            <Trace
+              {...props}
+              letter="A"
+              path="M 10 80 L 90 80 L 50 10 L 10 80"
+              strokeWidth={2}
+              strokeColor="black"
+            />
+          )}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   )
