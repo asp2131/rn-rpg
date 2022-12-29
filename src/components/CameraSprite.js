@@ -11,20 +11,20 @@ import sample from 'lodash.sample'
 import AnimatedSprite from '@asp2131/rn-anime-sprite'
 import monsterSprite from './sprites/monster/monsterSprite'
 
-export default function AnimatedSpriteExample({ isMoving }) {
-  const [animationType, setAnimationType] = useState('WALK')
+export default function AnimatedSpriteExample() {
+  const [animationType, setAnimationType] = useState('IDLE')
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
   const monsterRef = useRef(null)
 
-  useEffect(() => {
-    // console.log('isMoving', isMoving)
-  }, [isMoving])
-
   const onPress = () => {
     const animation = sample(monsterSprite.animationTypes)
     // console.log('animation', animation) // eslint-disable-line no-console
-    setAnimationType(animation)
+    if (animationType === 'IDLE') {
+      setAnimationType('EAT')
+    } else {
+      setAnimationType('IDLE')
+    }
   }
 
   const tweenSprite = () => {
@@ -45,22 +45,22 @@ export default function AnimatedSpriteExample({ isMoving }) {
       <AnimatedSprite
         ref={monsterRef}
         sprite={monsterSprite}
+        loopAnimation={true}
         animationFrameIndex={monsterSprite.animationIndex(animationType)}
-        loopAnimation={isMoving}
         coordinates={{
-          top: -200,
-          left: -100,
+          top: 300,
+          left: 200,
         }}
         size={{
-          width: monsterSprite.size.width * 1.65,
-          height: monsterSprite.size.height * 1.65,
+          width: monsterSprite.size.width * 2.65,
+          height: monsterSprite.size.height * 2.65,
         }}
         draggable={true}
         tweenOptions={tweenOptions}
         tweenStart={'fromMethod'}
         onPress={() => {
-          // onPress()
-          tweenSprite()
+          onPress()
+          //   tweenSprite()
         }}
       />
     </View>

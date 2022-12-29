@@ -16,6 +16,7 @@ import Character from './src/components/Character'
 import Modal from './src/components/Modal'
 import Trace from './src/screens/Trace'
 import * as Speech from 'expo-speech'
+import Camera from './src/screens/AICamera'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -131,7 +132,7 @@ function App({ navigation }) {
         )}
       </>
       {showScreen1 ? (
-        <Pressable onPress={() => navigation.navigate('Trace')}>
+        <Pressable onPress={() => navigation.navigate('Camera')}>
           <LottieView
             autoPlay
             ref={animation}
@@ -228,6 +229,16 @@ export default function Router() {
             />
           )}
         </Stack.Screen>
+        <Stack.Screen
+          name="Camera"
+          component={Camera}
+          options={{
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'rgb(245, 252, 255)',
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )

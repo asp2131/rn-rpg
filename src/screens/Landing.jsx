@@ -9,6 +9,8 @@ import {
   Dimensions,
 } from 'react-native'
 import LottieView from 'lottie-react-native'
+import { Button, Icon, Div } from 'react-native-magnus'
+import LandingSprite from '../components/LandingSprite'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -17,20 +19,17 @@ const Landing = ({ navigation }) => {
   const animation = useRef(null)
 
   const playAnimation = () => {
-    animation.current.play()
+    // animation.current.play()
     navigation.navigate('Home')
   }
 
   return (
     <View style={styles.container}>
-      {/* <Image
-            style={styles.logo}
-            source={require('../assets/images/logo.png')}
-        /> */}
-      <Image source={require('../../assets/bg5.png')} style={styles.image} />
+      {/* <Image source={require('../../assets/bg5.png')} style={styles.image} /> */}
       {/* <Text style={styles.title}>React Native Game</Text> */}
-      <View style={{ marginTop: 30 }}>
-        <Pressable style={styles.button} onPress={playAnimation}>
+      <LandingSprite />
+      <View style={{ marginBottom: 250 }}>
+        {/* <Pressable style={styles.button}>
           <LottieView
             ref={animation}
             style={{
@@ -39,7 +38,21 @@ const Landing = ({ navigation }) => {
             }}
             source={require('../../assets/start.json')}
           ></LottieView>
-        </Pressable>
+        </Pressable> */}
+        <Button
+          onPress={playAnimation}
+          ml="md"
+          px="xl"
+          py="lg"
+          fontWeight="bold"
+          bg="blue500"
+          rounded="circle"
+          color="white"
+          shadow={2}
+          // prefix={<Icon name="caretright" mr="sm" color="white" />}
+        >
+          Login with Google
+        </Button>
       </View>
     </View>
   )

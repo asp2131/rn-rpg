@@ -1,14 +1,13 @@
 {
   "name": "rn-rpg",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "resolutions": {
     "metro": "0.70.1"
   },
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "postinstall": "patch-package"
   },
@@ -25,8 +24,10 @@
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "expo": "~47.0.9",
+    "expo-camera": "~13.1.0",
     "expo-screen-orientation": "~5.0.1",
     "expo-speech": "~11.0.0",
+    "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "lottie-react-native": "^5.1.4",
     "patch-package": "^6.5.0",
@@ -34,14 +35,19 @@
     "prop-types": "^15.8.1",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-animatable": "^1.3.3",
     "react-native-animated-sprite": "^0.11.1",
     "react-native-gesture-handler": "^2.8.0",
+    "react-native-magnus": "^1.0.63",
+    "react-native-modal": "^13.0.1",
     "react-native-reanimated": "~2.12.0",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-svg": "13.4.0",
+    "react-native-vision-camera": "^2.15.2",
     "rn-sprite-sheet": "^1.1.12",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "vision-camera-image-labeler": "^0.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
