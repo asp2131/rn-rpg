@@ -11,6 +11,7 @@ import {
   CanvasControls,
   DrawingTool,
 } from '@benjeau/react-native-draw-extras'
+import { runOnJS } from 'react-native-reanimated'
 
 export default function Draw() {
   const [paths, setPaths] = useState([])
@@ -66,14 +67,14 @@ export default function Draw() {
         color: '#06d6a0',
       }
       newPaths[paths.length].segments.push(`M ${g.x} ${g.y}`)
-      setPaths(newPaths)
+      runOnJS(setPaths)(newPaths)
     })
     .onUpdate((g) => {
       const index = paths.length - 1
       const newPaths = [...paths]
       if (newPaths?.[index]?.segments) {
         newPaths[index].segments.push(`L ${g.x} ${g.y}`)
-        setPaths(newPaths)
+        runOnJS(setPaths)(newPaths)
       }
     })
     .minDistance(1)

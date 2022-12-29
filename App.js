@@ -32,10 +32,11 @@ function App({ navigation }) {
   const [showScreen1, setShowScreen1] = useState(true)
   const [playground, setPlayground] = useState('bg1')
   const [showScreen2, setShowScreen2] = useState(false)
-  const animation = useRef(null)
+  const painter = useRef(null)
+  const camera_buddy = useRef(null)
 
   useEffect(() => {
-    showScreen1 ? animation.current.play() : null
+    showScreen1 ? painter.current.play() : null
     // changeScreenOrientation()
     // console.log('isMoving', isMoving)
     // setCharacterPosition({ x: movementPosition.x, y: movementPosition.y })
@@ -51,10 +52,10 @@ function App({ navigation }) {
   const moveCharacter = (analogX, analogY) => {
     setIsMoving(true)
     // console.log(analogX - 300, analogY - 300)
-    console.log('analogY', analogY)
+    console.log('analogX', analogX)
     const adjustedX = analogX - 330
     const adjustedY = analogY - 360
-    console.log('adjustedY', adjustedY)
+    console.log('adjustedX', adjustedX)
 
     if (
       adjustedX >= -139 &&
@@ -76,24 +77,24 @@ function App({ navigation }) {
       setObjectName('Train')
       // Speech.speak('Train')
       // setModalVisible(true)
-    } else if (playground === 'bg1' && adjustedX > 238) {
+    } else if (playground === 'bg1' && adjustedX > 230) {
       // Speech.speak('Here we go')
       setPlayground('bg2')
       setShowScreen1(false)
       // navigation.navigate('Trace')
-    } else if (playground === 'bg2' && adjustedX < -70) {
+    } else if (playground === 'bg2' && adjustedX < -100) {
       // Speech.speak('Woo hoo')
       setPlayground('bg1')
       setShowScreen1(true)
-    } else if (playground === 'bg2' && adjustedX > 238) {
+    } else if (playground === 'bg2' && adjustedX > 230) {
       // Speech.speak('Woo hoo')
       setPlayground('bg3')
       setShowScreen1(false)
       setShowScreen2(true)
-    } else if (playground === 'bg3' && adjustedX < -70) {
+    } else if (playground === 'bg3' && adjustedX > 230) {
       // Speech.speak('Woo hoo')
-      setPlayground('bg2')
-      setShowScreen1(false)
+      setPlayground('bg1')
+      setShowScreen1(true)
       setShowScreen2(false)
     } else {
       setModalVisible(false)
@@ -134,16 +135,30 @@ function App({ navigation }) {
         )}
       </>
       {showScreen1 ? (
-        <Pressable onPress={() => navigation.navigate('Camera')}>
+        <Pressable onPress={() => navigation.navigate('Trace')}>
           <LottieView
             autoPlay
-            ref={animation}
+            ref={painter}
             style={{
               width: 150,
               height: 150,
             }}
             // Find more Lottie files at https://lottiefiles.com/featured
             source={require('./assets/woman_painting.json')}
+          />
+        </Pressable>
+      ) : null}
+      {showScreen2 ? (
+        <Pressable onPress={() => navigation.navigate('Camera')}>
+          <LottieView
+            autoPlay
+            ref={camera_buddy}
+            style={{
+              width: 150,
+              height: 150,
+            }}
+            // Find more Lottie files at https://lottiefiles.com/featured
+            source={require('./assets/camera_buddy.json')}
           />
         </Pressable>
       ) : null}
@@ -220,7 +235,15 @@ export default function Router() {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="Trace">
+        <Stack.Screen
+          options={{
+            headerTitle: '',
+            headerStyle: {
+              backgroundColor: 'antiquewhite',
+            },
+          }}
+          name="Trace"
+        >
           {(props) => (
             <Trace
               {...props}
