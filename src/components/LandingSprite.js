@@ -44,8 +44,8 @@ export default function AnimatedSpriteExample() {
         loopAnimation={true}
         animationFrameIndex={monsterSprite.animationIndex(animationType)}
         coordinates={{
-          top: 200,
-          left: -80,
+          top: 0,
+          left: -95,
         }}
         size={{
           width: monsterSprite.size.width * 2.65,

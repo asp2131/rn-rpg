@@ -12,7 +12,7 @@ import AnimatedSprite from '@asp2131/rn-anime-sprite'
 import monsterSprite from './sprites/monster/monsterSprite'
 
 export default function AnimatedSpriteExample() {
-  const [animationType, setAnimationType] = useState('IDLE')
+  const [animationType, setAnimationType] = useState('EAT')
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
   const monsterRef = useRef(null)
@@ -48,8 +48,8 @@ export default function AnimatedSpriteExample() {
         loopAnimation={true}
         animationFrameIndex={monsterSprite.animationIndex(animationType)}
         coordinates={{
-          top: 300,
-          left: 200,
+          top: 0,
+          left: 170,
         }}
         size={{
           width: monsterSprite.size.width * 2.65,

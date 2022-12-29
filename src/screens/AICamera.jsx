@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import {
   Camera,
   useFrameProcessor,
@@ -34,7 +34,11 @@ const AICamera = ({ cameraProps }) => {
 
   if (device == null)
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{ flex: 1, backgroundColor: 'rgb(245, 252, 255)' }}>
+        <Image
+          style={{ width: 350, height: 350, left: -50, top: 100 }}
+          source={require('../../assets/camperm.png')}
+        />
         <CameraSprite />
       </View>
     )

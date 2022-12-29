@@ -51,8 +51,10 @@ function App({ navigation }) {
   const moveCharacter = (analogX, analogY) => {
     setIsMoving(true)
     // console.log(analogX - 300, analogY - 300)
-    const adjustedX = analogX - 300
-    const adjustedY = analogY - 300
+    console.log('analogY', analogY)
+    const adjustedX = analogX - 330
+    const adjustedY = analogY - 360
+    console.log('adjustedY', adjustedY)
 
     if (
       adjustedX >= -139 &&

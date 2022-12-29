@@ -11,6 +11,7 @@ import {
 import LottieView from 'lottie-react-native'
 import { Button, Icon, Div } from 'react-native-magnus'
 import LandingSprite from '../components/LandingSprite'
+import Clickhere from '../../assets/Clickhere.svg'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -25,20 +26,12 @@ const Landing = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Image source={require('../../assets/bg5.png')} style={styles.image} /> */}
+      <View style={{ marginTop: 50 }}>
+        <Clickhere width={100} height={100} />
+      </View>
       {/* <Text style={styles.title}>React Native Game</Text> */}
       <LandingSprite />
-      <View style={{ marginBottom: 250 }}>
-        {/* <Pressable style={styles.button}>
-          <LottieView
-            ref={animation}
-            style={{
-              width: 100,
-              height: 100,
-            }}
-            source={require('../../assets/start.json')}
-          ></LottieView>
-        </Pressable> */}
+      <View style={{ marginBottom: 200 }}>
         <Button
           onPress={playAnimation}
           ml="md"
@@ -49,9 +42,9 @@ const Landing = ({ navigation }) => {
           rounded="circle"
           color="white"
           shadow={2}
-          // prefix={<Icon name="caretright" mr="sm" color="white" />}
+          prefix={<Icon name="user" mr="sm" color="white" />}
         >
-          Login with Google
+          Login with Email
         </Button>
       </View>
     </View>
@@ -65,6 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgb(245, 252, 255)',
   },
   logo: {
     width: 200,
@@ -87,8 +81,8 @@ const styles = StyleSheet.create({
   image: {
     position: 'absolute',
     //show more the right side of the image
-    // aspectRatio: 6,
+    aspectRatio: 6,
     // width: null,
-    left: -width / 2.5,
+    top: 50,
   },
 })
