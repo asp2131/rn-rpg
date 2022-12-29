@@ -8,12 +8,19 @@ import {
 import { labelImage } from 'vision-camera-image-labeler'
 import { runOnJS } from 'react-native-reanimated'
 import CameraSprite from '../components/CameraSprite'
+import * as Speech from 'expo-speech'
+import { Button, Icon, Div } from 'react-native-magnus'
 
 const AICamera = ({ cameraProps }) => {
   const [value, setValue] = useState('')
 
   const getPermission = async () => {
     const cameraPermission = await Camera.requestCameraPermission()
+  }
+
+  const sayText = () => {
+    if (value === '') return
+    Speech.speak(value)
   }
 
   useEffect(() => {
@@ -39,7 +46,7 @@ const AICamera = ({ cameraProps }) => {
           style={{ width: 350, height: 350, left: -50, top: 100 }}
           source={require('../../assets/camperm.png')}
         />
-        <CameraSprite />
+        <CameraSprite sayText={sayText} />
       </View>
     )
 
@@ -55,7 +62,20 @@ const AICamera = ({ cameraProps }) => {
       <Text style={{ backgroundColor: 'black', fontSize: 20, color: 'white' }}>
         {value}
       </Text>
-      <CameraSprite />
+      <Button
+        mt="lg"
+        ml="md"
+        px="xl"
+        py="lg"
+        bg="blue500"
+        rounded="circle"
+        color="white"
+        shadow={2}
+        onPress={sayText}
+        prefix={<Icon name="caretright" mr="sm" color="white" />}
+      >
+        Play now
+      </Button>
     </>
   )
 }

@@ -6,22 +6,14 @@
 
 import React, { Component, useState, useRef, useEffect } from 'react'
 import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native'
-import sample from 'lodash.sample'
 
 import AnimatedSprite from '@asp2131/rn-anime-sprite'
 import monsterSprite from './sprites/monster/monsterSprite'
 
-export default function AnimatedSpriteExample() {
-  const [animationType, setAnimationType] = useState('IDLE')
+export default function AnimatedSpriteExample({ onPress, animationType }) {
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
   const monsterRef = useRef(null)
-
-  const onPress = () => {
-    const animation = sample(monsterSprite.animationTypes)
-    // console.log('animation', animation) // eslint-disable-line no-console
-    setAnimationType(animation)
-  }
 
   const tweenSprite = () => {
     // const coords = monsterRef.getCoordinates()
@@ -51,7 +43,7 @@ export default function AnimatedSpriteExample() {
           width: monsterSprite.size.width * 2.65,
           height: monsterSprite.size.height * 2.65,
         }}
-        draggable={true}
+        draggable={false}
         tweenOptions={tweenOptions}
         tweenStart={'fromMethod'}
         onPress={() => {

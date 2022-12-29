@@ -11,7 +11,7 @@ import sample from 'lodash.sample'
 import AnimatedSprite from '@asp2131/rn-anime-sprite'
 import monsterSprite from './sprites/monster/monsterSprite'
 
-export default function AnimatedSpriteExample() {
+export default function AnimatedSpriteExample({ sayText }) {
   const [animationType, setAnimationType] = useState('EAT')
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
@@ -20,11 +20,12 @@ export default function AnimatedSpriteExample() {
   const onPress = () => {
     const animation = sample(monsterSprite.animationTypes)
     // console.log('animation', animation) // eslint-disable-line no-console
-    if (animationType === 'IDLE') {
-      setAnimationType('EAT')
-    } else {
+    setAnimationType('EAT')
+    sayText()
+    setTimeout(() => {
       setAnimationType('IDLE')
-    }
+    }, 1000)
+    clearTimeout()
   }
 
   const tweenSprite = () => {

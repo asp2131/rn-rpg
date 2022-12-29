@@ -1,5 +1,5 @@
 //create a lading ui for the game
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   View,
   Text,
@@ -12,11 +12,14 @@ import LottieView from 'lottie-react-native'
 import { Button, Icon, Div } from 'react-native-magnus'
 import LandingSprite from '../components/LandingSprite'
 import Clickhere from '../../assets/Clickhere.svg'
+import monsterSprite from '../components/sprites/monster/monsterSprite'
+import sample from 'lodash.sample'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const Landing = ({ navigation }) => {
+  const [animationType, setAnimationType] = useState('IDLE')
   const animation = useRef(null)
 
   const playAnimation = () => {
@@ -24,13 +27,18 @@ const Landing = ({ navigation }) => {
     navigation.navigate('Home')
   }
 
+  const onPress = () => {
+    const animation = sample(monsterSprite.animationTypes)
+    setAnimationType(animation)
+  }
+
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 50 }}>
+      <Pressable onPress={onPress} style={{ marginTop: 50 }}>
         <Clickhere width={100} height={100} />
-      </View>
+      </Pressable>
       {/* <Text style={styles.title}>React Native Game</Text> */}
-      <LandingSprite />
+      <LandingSprite onPress={onPress} animationType={animationType} />
       <View style={{ marginBottom: 200 }}>
         <Button
           onPress={playAnimation}
