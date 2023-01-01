@@ -9,6 +9,8 @@ import {
   Dimensions,
   Image,
   Pressable,
+  Animated,
+  PanResponder,
 } from 'react-native'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import LottieView from 'lottie-react-native'
@@ -22,8 +24,6 @@ const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 function App({ navigation }) {
-  const [value, setValue] = useState(0)
-  const [stickPosition, setStickPosition] = useState({ x: 0, y: 0 })
   const [movementPosition, setMovementPosition] = useState({ x: 0, y: 0 })
   const [characterPosition, setCharacterPosition] = useState({ x: 0, y: 0 })
   const [isMoving, setIsMoving] = useState(false)
@@ -32,16 +32,43 @@ function App({ navigation }) {
   const [showScreen1, setShowScreen1] = useState(true)
   const [playground, setPlayground] = useState('bg1')
   const [showScreen2, setShowScreen2] = useState(false)
+  const [side, setSide] = useState('middle')
+  const transition = useRef(new Animated.Value(0)).current
   const painter = useRef(null)
   const camera_buddy = useRef(null)
+  const pan = useRef(new Animated.ValueXY()).current
 
   useEffect(() => {
     showScreen1 ? painter.current.play() : null
     // changeScreenOrientation()
-    // console.log('isMoving', isMoving)
-    // setCharacterPosition({ x: movementPosition.x, y: movementPosition.y })
-    // console.log('movementPosition', movementPosition)
   }, [movementPosition, isMoving])
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponderCapture: (event, gestureState) => true,
+      onPanResponderStart: (e, gestureState) => {
+        moveCharacter(gestureState.x0, gestureState.y0)
+      },
+      onPanResponderEnd: (e, gestureState) => {
+        moveCharacter(gestureState.x0, gestureState.y0)
+      },
+      onPanResponderGrant: () => {
+        pan.setOffset({
+          x: pan.x._value,
+          y: pan.y._value,
+        })
+      },
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false,
+      }),
+      onPanResponderRelease: (event, gestureState) => {
+        // pan.flattenOffset()
+        // console.log(event.nativeEvent.locationX)
+        // console.log(event.nativeEvent.locationY)
+      },
+    })
+  ).current
 
   async function changeScreenOrientation() {
     await ScreenOrientation.lockAsync(
@@ -52,50 +79,74 @@ function App({ navigation }) {
   const moveCharacter = (analogX, analogY) => {
     setIsMoving(true)
     // console.log(analogX - 300, analogY - 300)
-    console.log('analogX', analogX)
+    // console.log('analogX', analogX)
     const adjustedX = analogX - 330
     const adjustedY = analogY - 360
-    console.log('adjustedX', adjustedX)
+
+    analogY -= 300
+    analogX -= 150
+    console.log('analogX', analogX)
+    console.log('analogY', analogY)
 
     if (
-      adjustedX >= -139 &&
-      adjustedX <= -51 &&
-      adjustedY >= 208 &&
-      adjustedY <= 360 &&
+      analogX >= -139 &&
+      analogX <= -51 &&
+      analogY >= 208 &&
+      analogY <= 360 &&
       playground === 'bg1'
     ) {
       setObjectName('Tree')
       // Speech.speak('Tree')
       // setModalVisible(true)
     } else if (
-      adjustedX >= 50 &&
-      adjustedX <= 95 &&
-      adjustedY >= 32 &&
-      adjustedY <= 1114 &&
+      analogX >= 50 &&
+      analogX <= 95 &&
+      analogY >= 32 &&
+      analogY <= 1114 &&
       playground === 'bg1'
     ) {
       setObjectName('Train')
       // Speech.speak('Train')
       // setModalVisible(true)
-    } else if (playground === 'bg1' && adjustedX > 230) {
+    } else if (playground === 'bg1' && side === 'right' && analogX < 0) {
+      console.log('Go to middle')
+      Animated.timing(transition, {
+        toValue: 100,
+        duration: 2000,
+        useNativeDriver: true,
+      }).start()
+      setSide('middle')
+      // Speech.speak('Woo hoo')
+      // setPlayground('bg1')
+      // setShowScreen1(true)
+    } else if (playground === 'bg1' && side === 'middle' && analogX > 200) {
+      console.log('Go to right')
+      Animated.timing(transition, {
+        toValue: -100,
+        duration: 2000,
+        useNativeDriver: true,
+      }).start()
+      setSide('right')
       // Speech.speak('Here we go')
-      setPlayground('bg2')
-      setShowScreen1(false)
+      // setPlayground('bg2')
+      // setShowScreen1(false)
       // navigation.navigate('Trace')
-    } else if (playground === 'bg2' && adjustedX < -100) {
+    } else if (playground === 'bg1' && side === 'middle' && analogX < -100) {
+      Animated.timing(transition, {
+        toValue: 100,
+        duration: 2000,
+        useNativeDriver: true,
+      }).start()
+      setSide('middle')
       // Speech.speak('Woo hoo')
-      setPlayground('bg1')
-      setShowScreen1(true)
-    } else if (playground === 'bg2' && adjustedX > 230) {
+      // setPlayground('bg3')
+      // setShowScreen1(false)
+      // setShowScreen2(true)
+    } else if (playground === 'bg3' && analogX > 230) {
       // Speech.speak('Woo hoo')
-      setPlayground('bg3')
-      setShowScreen1(false)
-      setShowScreen2(true)
-    } else if (playground === 'bg3' && adjustedX > 230) {
-      // Speech.speak('Woo hoo')
-      setPlayground('bg1')
-      setShowScreen1(true)
-      setShowScreen2(false)
+      // setPlayground('bg1')
+      // setShowScreen1(true)
+      // setShowScreen2(false)
     } else {
       setModalVisible(false)
     }
@@ -103,8 +154,8 @@ function App({ navigation }) {
     //e.nativeEvent.locationX
     //Move character based on analog stick position
     setCharacterPosition({
-      x: adjustedX,
-      y: adjustedY,
+      x: analogX,
+      y: analogY,
     })
 
     setTimeout(() => {
@@ -114,15 +165,24 @@ function App({ navigation }) {
 
   return (
     <View
-      onTouchStart={(e) =>
-        moveCharacter(e.nativeEvent.locationX, e.nativeEvent.locationY)
-      }
+      // onTouchStart={(e) =>
+      //   moveCharacter(e.nativeEvent.locationX, e.nativeEvent.locationY)
+      // }
       style={styles.container}
+      {...panResponder.panHandlers}
     >
       <>
         {showScreen1 ? (
           <>
-            <Image source={require('./assets/bg4.png')} style={styles.image} />
+            <Animated.Image
+              source={require('./assets/bg4.png')}
+              style={
+                (styles.image,
+                {
+                  transform: [{ translateX: transition }],
+                })
+              }
+            />
           </>
         ) : showScreen2 ? (
           <>
@@ -136,16 +196,24 @@ function App({ navigation }) {
       </>
       {showScreen1 ? (
         <Pressable onPress={() => navigation.navigate('Trace')}>
-          <LottieView
-            autoPlay
-            ref={painter}
+          <Animated.View
             style={{
-              width: 150,
-              height: 150,
+              transform: [{ translateX: transition }],
             }}
-            // Find more Lottie files at https://lottiefiles.com/featured
-            source={require('./assets/woman_painting.json')}
-          />
+          >
+            <LottieView
+              autoPlay
+              ref={painter}
+              style={{
+                width: 150,
+                height: 150,
+                bottom: 200,
+                position: 'static',
+              }}
+              // Find more Lottie files at https://lottiefiles.com/featured
+              source={require('./assets/woman_painting.json')}
+            />
+          </Animated.View>
         </Pressable>
       ) : null}
       {showScreen2 ? (
@@ -220,7 +288,10 @@ const Stack = createStackNavigator()
 export default function Router() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
+      <Stack.Navigator
+        screenOptions={{ gestureEnabled: true }}
+        initialRouteName="Landing"
+      >
         <Stack.Screen
           name="Landing"
           component={Landing}
