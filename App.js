@@ -86,7 +86,7 @@ function App({ navigation }) {
 
     analogY -= 300
     analogX -= 150
-    // console.log('analogX', analogX)
+    console.log('analogX', analogX)
     // console.log('analogY', analogY)
 
     if (
@@ -120,7 +120,7 @@ function App({ navigation }) {
       // Speech.speak('Woo hoo')
       // setPlayground('bg1')
       // setShowScreen1(true)
-    } else if (playground === 'bg1' && side === 'middle' && analogX > 200) {
+    } else if (playground === 'bg1' && side === 'middle' && analogX > 160) {
       Animated.timing(transition, {
         toValue: -100,
         duration: 2000,

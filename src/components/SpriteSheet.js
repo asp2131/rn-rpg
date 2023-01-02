@@ -10,7 +10,7 @@ import sample from 'lodash.sample'
 
 import AnimatedSprite from '@asp2131/rn-anime-sprite'
 // import monsterSprite from './sprites/monster/monsterSprite'
-import ninjaSprite from './sprites/ninja/ninjaSprite'
+import chickenboySprite from './sprites/chickenboy/chickenboySprite'
 
 export default function AnimatedSpriteExample({ isMoving }) {
   const [animationType, setAnimationType] = useState('IDLE')
@@ -28,7 +28,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
   }, [isMoving])
 
   const onPress = () => {
-    const animation = sample(ninjaSprite.animationTypes)
+    const animation = sample(chickenboySprite.animationTypes)
     // console.log('animation', animation) // eslint-disable-line no-console
     setAnimationType(animation)
   }
@@ -50,16 +50,16 @@ export default function AnimatedSpriteExample({ isMoving }) {
     <View style={styles.container}>
       <AnimatedSprite
         ref={monsterRef}
-        sprite={ninjaSprite}
-        animationFrameIndex={ninjaSprite.animationIndex(animationType)}
-        loopAnimation={isMoving}
+        sprite={chickenboySprite}
+        animationFrameIndex={chickenboySprite.animationIndex(animationType)}
+        loopAnimation={true}
         coordinates={{
           top: -200,
           left: -100,
         }}
         size={{
-          width: ninjaSprite.size.width * 2.65,
-          height: ninjaSprite.size.height * 2.65,
+          width: chickenboySprite.size.width * 1.65,
+          height: chickenboySprite.size.height * 1.65,
         }}
         draggable={true}
         tweenOptions={tweenOptions}
