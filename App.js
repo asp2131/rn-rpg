@@ -11,6 +11,7 @@ import {
   Pressable,
   Animated,
   PanResponder,
+  TouchableHighlight,
 } from 'react-native'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import LottieView from 'lottie-react-native'
@@ -39,7 +40,7 @@ function App({ navigation }) {
   const pan = useRef(new Animated.ValueXY()).current
 
   useEffect(() => {
-    showScreen1 ? painter.current.play() : null
+    // showScreen1 ? painter.current.play() : null
     // changeScreenOrientation()
   }, [movementPosition, isMoving])
 
@@ -85,8 +86,8 @@ function App({ navigation }) {
 
     analogY -= 300
     analogX -= 150
-    console.log('analogX', analogX)
-    console.log('analogY', analogY)
+    // console.log('analogX', analogX)
+    // console.log('analogY', analogY)
 
     if (
       analogX >= -139 &&
@@ -120,7 +121,6 @@ function App({ navigation }) {
       // setPlayground('bg1')
       // setShowScreen1(true)
     } else if (playground === 'bg1' && side === 'middle' && analogX > 200) {
-      console.log('Go to right')
       Animated.timing(transition, {
         toValue: -100,
         duration: 2000,
@@ -195,26 +195,13 @@ function App({ navigation }) {
         )}
       </>
       {showScreen1 ? (
-        <Pressable onPress={() => navigation.navigate('Trace')}>
-          <Animated.View
-            style={{
-              transform: [{ translateX: transition }],
-            }}
-          >
-            <LottieView
-              autoPlay
-              ref={painter}
-              style={{
-                width: 150,
-                height: 150,
-                bottom: 200,
-                position: 'static',
-              }}
-              // Find more Lottie files at https://lottiefiles.com/featured
-              source={require('./assets/woman_painting.json')}
-            />
-          </Animated.View>
-        </Pressable>
+        <Animated.View
+          style={{
+            transform: [{ translateX: transition }],
+          }}
+        >
+          <></>
+        </Animated.View>
       ) : null}
       {showScreen2 ? (
         <Pressable onPress={() => navigation.navigate('Camera')}>

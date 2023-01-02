@@ -9,20 +9,26 @@ import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native'
 import sample from 'lodash.sample'
 
 import AnimatedSprite from '@asp2131/rn-anime-sprite'
-import monsterSprite from './sprites/monster/monsterSprite'
+// import monsterSprite from './sprites/monster/monsterSprite'
+import ninjaSprite from './sprites/ninja/ninjaSprite'
 
 export default function AnimatedSpriteExample({ isMoving }) {
-  const [animationType, setAnimationType] = useState('WALK')
+  const [animationType, setAnimationType] = useState('IDLE')
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
   const monsterRef = useRef(null)
 
   useEffect(() => {
     // console.log('isMoving', isMoving)
+    if (isMoving) {
+      setAnimationType('WALK')
+    } else {
+      setAnimationType('IDLE')
+    }
   }, [isMoving])
 
   const onPress = () => {
-    const animation = sample(monsterSprite.animationTypes)
+    const animation = sample(ninjaSprite.animationTypes)
     // console.log('animation', animation) // eslint-disable-line no-console
     setAnimationType(animation)
   }
@@ -44,16 +50,16 @@ export default function AnimatedSpriteExample({ isMoving }) {
     <View style={styles.container}>
       <AnimatedSprite
         ref={monsterRef}
-        sprite={monsterSprite}
-        animationFrameIndex={monsterSprite.animationIndex(animationType)}
+        sprite={ninjaSprite}
+        animationFrameIndex={ninjaSprite.animationIndex(animationType)}
         loopAnimation={isMoving}
         coordinates={{
           top: -200,
           left: -100,
         }}
         size={{
-          width: monsterSprite.size.width * 1.65,
-          height: monsterSprite.size.height * 1.65,
+          width: ninjaSprite.size.width * 2.65,
+          height: ninjaSprite.size.height * 2.65,
         }}
         draggable={true}
         tweenOptions={tweenOptions}
