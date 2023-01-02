@@ -16,7 +16,7 @@ function GameObject({ x, y, isMoving }) {
   return (
     <Animated.View style={[styles.object, position.getTranslateTransform()]}>
       {/* <Image source={require('../../assets/mario.png')} style={styles.image} /> */}
-      <Sprite isMoving={isMoving} />
+      <Sprite x={x} isMoving={isMoving} />
     </Animated.View>
   )
 }

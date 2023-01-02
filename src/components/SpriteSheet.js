@@ -12,10 +12,11 @@ import AnimatedSprite from '@asp2131/rn-anime-sprite'
 // import monsterSprite from './sprites/monster/monsterSprite'
 import chickenboySprite from './sprites/chickenboy/chickenboySprite'
 
-export default function AnimatedSpriteExample({ isMoving }) {
+export default function AnimatedSpriteExample({ x, isMoving }) {
   const [animationType, setAnimationType] = useState('IDLE')
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
+  const [direction, setDirection] = useState(1)
   const monsterRef = useRef(null)
 
   useEffect(() => {
@@ -25,7 +26,13 @@ export default function AnimatedSpriteExample({ isMoving }) {
     } else {
       setAnimationType('IDLE')
     }
-  }, [isMoving])
+
+    if (x < 0) {
+      setDirection(-1)
+    } else {
+      setDirection(1)
+    }
+  }, [isMoving, direction])
 
   const onPress = () => {
     const animation = sample(chickenboySprite.animationTypes)
@@ -64,6 +71,7 @@ export default function AnimatedSpriteExample({ isMoving }) {
         draggable={true}
         tweenOptions={tweenOptions}
         tweenStart={'fromMethod'}
+        direction={direction}
         onPress={() => {
           // onPress()
           tweenSprite()
