@@ -260,8 +260,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: width * 2,
-    height: height * 1.5,
     position: 'absolute',
     zIndex: -1,
     // aspectRatio: 6,
