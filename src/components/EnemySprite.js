@@ -9,41 +9,31 @@ import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native'
 import sample from 'lodash.sample'
 
 import AnimatedSprite from '@asp2131/rn-anime-sprite'
-// import monsterSprite from './sprites/monster/monsterSprite'
-import chickenboySprite from './sprites/chickenboy/chickenboySprite'
+import owlguySprite from './sprites/owlguy/owlguySprite'
+import { Motion } from '@legendapp/motion'
+import { MotiView } from 'moti'
 
-export default function AnimatedSpriteExample({ x, isMoving, isAttacking }) {
-  const [animationType, setAnimationType] = useState('IDLE')
+export default function AnimatedSpriteExample({ isAttacking = false }) {
+  const [animationType, setAnimationType] = useState('WALK')
   const [tweenOptions, setTweenOptions] = useState({})
   const [isWalking, setIsWalking] = useState(false)
   const [direction, setDirection] = useState(1)
-  const monsterRef = useRef(null)
+  const [horizontal, setHorizontal] = useState(-150)
+  const enemyRef = useRef(null)
 
   useEffect(() => {
-    // console.log('isMoving', isMoving)
-    if (isMoving) {
-      setAnimationType('WALK')
-    } else if (isAttacking) {
-      setAnimationType('ATTACK')
-    } else {
-      setAnimationType('IDLE')
-    }
-
-    if (x < 0) {
-      setDirection(-1)
-    } else {
-      setDirection(1)
-    }
-  }, [isMoving, isAttacking, direction])
+    // setTimeout(() => {
+    //   direction === 1 ? setDirection(-1) : setDirection(1)
+    // }, 3500)
+  }, [direction])
 
   const onPress = () => {
-    const animation = sample(chickenboySprite.animationTypes)
-    // console.log('animation', animation) // eslint-disable-line no-console
-    setAnimationType(animation)
+    const animation = sample(owlguySprite.animationTypes)
+    console.log('enemy animation') // eslint-disable-line no-console
   }
 
   const tweenSprite = () => {
-    // const coords = monsterRef.getCoordinates()
+    // const coords = enemyRef.getCoordinates()
     const location = [0, 100, 200, 300, 400, 500]
     setTweenOptions({
       tweenType: 'sine-wave',
@@ -56,30 +46,49 @@ export default function AnimatedSpriteExample({ x, isMoving, isAttacking }) {
   }
 
   return (
-    <View style={styles.container}>
+    <MotiView
+      from={{
+        translateX: 400,
+      }}
+      animate={{
+        translateX: 0,
+      }}
+      transition={{
+        loop: true,
+        type: 'timing',
+        duration: 4500,
+        delay: 100,
+      }}
+      style={{
+        zIndex: 2,
+      }}
+      onPress={() => {
+        console.log('enemy pressed') // eslint-disable-line no-console
+      }}
+    >
       <AnimatedSprite
-        ref={monsterRef}
-        sprite={chickenboySprite}
-        animationFrameIndex={chickenboySprite.animationIndex(animationType)}
+        ref={enemyRef}
+        sprite={owlguySprite}
         loopAnimation={true}
+        animationFrameIndex={owlguySprite.animationIndex(animationType)}
         coordinates={{
-          top: -200,
-          left: -100,
+          top: -400,
+          left: horizontal,
         }}
         size={{
-          width: chickenboySprite.size.width * 1.65,
-          height: chickenboySprite.size.height * 1.65,
+          width: owlguySprite.size.width * 1.25,
+          height: owlguySprite.size.height * 1.25,
         }}
         draggable={true}
         tweenOptions={tweenOptions}
-        tweenStart={'fromMethod'}
         direction={direction}
+        tweenStart={'fromMethod'}
         onPress={() => {
-          // onPress()
-          tweenSprite()
+          onPress()
+          //   tweenSprite()
         }}
       />
-    </View>
+    </MotiView>
   )
 }
 

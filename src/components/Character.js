@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Image, StyleSheet, Animated } from 'react-native'
 import Sprite from './SpriteSheet'
 
-function GameObject({ x, y, isMoving }) {
+function GameObject({ x, y, isMoving, isAttacking }) {
   const position = useState(new Animated.ValueXY({ x, y }))[0]
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function GameObject({ x, y, isMoving }) {
   return (
     <Animated.View style={[styles.object, position.getTranslateTransform()]}>
       {/* <Image source={require('../../assets/mario.png')} style={styles.image} /> */}
-      <Sprite x={x} isMoving={isMoving} />
+      <Sprite x={x} isMoving={isMoving} isAttacking={isAttacking} />
     </Animated.View>
   )
 }

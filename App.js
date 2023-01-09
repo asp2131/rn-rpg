@@ -17,9 +17,7 @@ import * as ScreenOrientation from 'expo-screen-orientation'
 import LottieView from 'lottie-react-native'
 import Character from './src/components/Character'
 import Modal from './src/components/Modal'
-import Trace from './src/screens/Trace'
-import * as Speech from 'expo-speech'
-import Camera from './src/screens/AICamera'
+import { Button } from 'react-native-magnus'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -28,6 +26,7 @@ function App({ navigation }) {
   const [movementPosition, setMovementPosition] = useState({ x: 0, y: 0 })
   const [characterPosition, setCharacterPosition] = useState({ x: 0, y: 0 })
   const [isMoving, setIsMoving] = useState(false)
+  const [isAttacking, setIsAttacking] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
   const [objectName, setObjectName] = useState('')
   const [showScreen1, setShowScreen1] = useState(true)
@@ -41,7 +40,7 @@ function App({ navigation }) {
 
   useEffect(() => {
     // showScreen1 ? painter.current.play() : null
-    // changeScreenOrientation()
+    changeScreenOrientation()
   }, [movementPosition, isMoving])
 
   const panResponder = useRef(
@@ -78,28 +77,28 @@ function App({ navigation }) {
   }
 
   const moveCharacter = (analogX, analogY) => {
-    setIsMoving(true)
     // console.log(analogX - 300, analogY - 300)
     // console.log('analogX', analogX)
     const adjustedX = analogX - 330
     const adjustedY = analogY - 360
 
-    analogY -= 300
-    analogX -= 150
+    // analogY -= 300
+    // analogX -= 150
+    analogY -= 100
+    analogX -= 375
     console.log('analogX', analogX)
-    // console.log('analogY', analogY)
+    console.log('analogY', analogY)
 
-    if (
-      analogX >= -139 &&
-      analogX <= -51 &&
-      analogY >= 208 &&
-      analogY <= 360 &&
-      playground === 'bg1'
-    ) {
-      setObjectName('Tree')
+    if (analogX >= 265 && analogX <= 317 && analogY >= 160 && analogY <= 179) {
+      return
+      // setObjectName('Tree')
       // Speech.speak('Tree')
       // setModalVisible(true)
-    } else if (
+    }
+
+    setIsMoving(true)
+
+    if (
       analogX >= 50 &&
       analogX <= 95 &&
       analogY >= 32 &&
@@ -176,12 +175,12 @@ function App({ navigation }) {
           <>
             <Animated.Image
               source={require('./assets/bg4.png')}
-              style={
-                (styles.image,
+              style={[
+                styles.image,
                 {
                   transform: [{ translateX: transition }],
-                })
-              }
+                },
+              ]}
             />
           </>
         ) : showScreen2 ? (
@@ -195,13 +194,24 @@ function App({ navigation }) {
         )}
       </>
       {showScreen1 ? (
-        <Animated.View
+        <View
           style={{
-            transform: [{ translateX: transition }],
+            zIndex: 100,
+          }}
+          onTouchStart={() => {
+            setIsAttacking(!isAttacking)
+            setIsMoving(false)
           }}
         >
-          <></>
-        </Animated.View>
+          <>
+            <Pressable
+              onPress={() => setIsAttacking(true)}
+              style={{ right: -250, bottom: -100 }}
+            >
+              <Text style={{ color: '#000', fontWeight: 'bold' }}>ATTACK</Text>
+            </Pressable>
+          </>
+        </View>
       ) : null}
       {showScreen2 ? (
         <Pressable onPress={() => navigation.navigate('Camera')}>
@@ -219,6 +229,7 @@ function App({ navigation }) {
       ) : null}
       <Character
         isMoving={isMoving}
+        isAttacking={isAttacking}
         x={characterPosition.x}
         y={characterPosition.y}
       />
@@ -250,9 +261,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: width * 2,
-    height: height * 1.2,
+    height: height * 1.5,
     position: 'absolute',
-    zIndex: 0,
+    zIndex: -1,
     // aspectRatio: 6,
     // width: null,
   },
@@ -291,35 +302,6 @@ export default function Router() {
           component={App}
           options={{
             headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          options={{
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'antiquewhite',
-            },
-          }}
-          name="Trace"
-        >
-          {(props) => (
-            <Trace
-              {...props}
-              letter="A"
-              path="M 10 80 L 90 80 L 50 10 L 10 80"
-              strokeWidth={2}
-              strokeColor="black"
-            />
-          )}
-        </Stack.Screen>
-        <Stack.Screen
-          name="Camera"
-          component={Camera}
-          options={{
-            headerTitle: '',
-            headerStyle: {
-              backgroundColor: 'rgb(245, 252, 255)',
-            },
           }}
         />
       </Stack.Navigator>
