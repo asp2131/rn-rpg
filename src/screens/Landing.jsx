@@ -34,11 +34,11 @@ const Landing = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={onPress} style={{ marginTop: 50 }}>
+      {/* <Pressable onPress={onPress} style={{ marginTop: 50 }}>
         <Clickhere width={100} height={100} />
       </Pressable>
-      {/* <Text style={styles.title}>React Native Game</Text> */}
-      <LandingSprite onPress={onPress} animationType={animationType} />
+      <LandingSprite onPress={onPress} animationType={animationType} /> */}
+      <Text style={styles.title}>React Native Game</Text>
       <View style={{ marginBottom: 200 }}>
         <Button
           onPress={playAnimation}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: '#ffffff',
+    color: '#000',
     marginBottom: 20,
   },
   button: {

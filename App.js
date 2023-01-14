@@ -12,6 +12,7 @@ import {
   Animated,
   PanResponder,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import LottieView from 'lottie-react-native'
@@ -40,13 +41,26 @@ function App({ navigation }) {
 
   useEffect(() => {
     // showScreen1 ? painter.current.play() : null
-    changeScreenOrientation()
-  }, [movementPosition, isMoving])
+    // changeScreenOrientation()
+  }, [movementPosition, isMoving, isAttacking])
 
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
-      onStartShouldSetPanResponderCapture: (event, gestureState) => true,
+      onStartShouldSetPanResponder: (evt, gestureState) => {
+        // check if gesture is within the boundaries of a button
+        if (isWithinButtonBounds(gestureState)) {
+          return false
+        }
+        return true
+      },
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+        // check if gesture is within the boundaries of a button
+        if (isWithinButtonBounds(gestureState)) {
+          return false
+        }
+        return true
+      },
       onPanResponderStart: (e, gestureState) => {
         moveCharacter(gestureState.x0, gestureState.y0)
       },
@@ -76,25 +90,28 @@ function App({ navigation }) {
     )
   }
 
-  const moveCharacter = (analogX, analogY) => {
+  const isWithinButtonBounds = (gestureState) => {
+    const { locationX, locationY } = gestureState
+    // check if locationX and locationY are within the boundaries of any button
+    // and return true if so
+    console.log('locationX', locationX)
+    console.log('locationY', locationY)
+    // otherwise return false
+    return false
+  }
+
+  const moveCharacter = (analogX, analogY, standStill = false) => {
     // console.log(analogX - 300, analogY - 300)
     // console.log('analogX', analogX)
     const adjustedX = analogX - 330
     const adjustedY = analogY - 360
 
-    // analogY -= 300
-    // analogX -= 150
-    analogY -= 100
-    analogX -= 375
-    console.log('analogX', analogX)
-    console.log('analogY', analogY)
-
-    if (analogX >= 265 && analogX <= 317 && analogY >= 160 && analogY <= 179) {
-      return
-      // setObjectName('Tree')
-      // Speech.speak('Tree')
-      // setModalVisible(true)
-    }
+    analogY -= 300
+    analogX -= 150
+    // analogY -= 100
+    // analogX -= 375
+    // console.log('analogX', analogX)
+    // console.log('analogY', analogY)
 
     setIsMoving(true)
 
@@ -167,6 +184,7 @@ function App({ navigation }) {
       // onTouchStart={(e) =>
       //   moveCharacter(e.nativeEvent.locationX, e.nativeEvent.locationY)
       // }
+      onLongPress={(e) => console.log('Long')}
       style={styles.container}
       {...panResponder.panHandlers}
     >
@@ -198,15 +216,24 @@ function App({ navigation }) {
           style={{
             zIndex: 100,
           }}
-          onTouchStart={() => {
-            setIsAttacking(!isAttacking)
-            setIsMoving(false)
-          }}
         >
           <>
             <Pressable
-              onPress={() => setIsAttacking(true)}
-              style={{ right: -250, bottom: -100 }}
+              onTouchStart={() => {
+                setIsAttacking(!isAttacking)
+                setIsMoving(false)
+              }}
+              style={{
+                right: -180,
+                bottom: -280,
+                position: 'absolute',
+                borderRadius: 50,
+                backgroundColor: '#fff',
+                justifyContent: 'center',
+                alignContent: 'center',
+                borderWidth: 20,
+                borderColor: '#fff',
+              }}
             >
               <Text style={{ color: '#000', fontWeight: 'bold' }}>ATTACK</Text>
             </Pressable>
@@ -227,12 +254,14 @@ function App({ navigation }) {
           />
         </Pressable>
       ) : null}
-      <Character
-        isMoving={isMoving}
-        isAttacking={isAttacking}
-        x={characterPosition.x}
-        y={characterPosition.y}
-      />
+      <TouchableOpacity>
+        <Character
+          isMoving={isMoving}
+          isAttacking={isAttacking}
+          x={characterPosition.x}
+          y={characterPosition.y}
+        />
+      </TouchableOpacity>
       {/* <Forest width={width} height={height} /> */}
       {/* Position Axis pad to left corner of screen */}
       <View

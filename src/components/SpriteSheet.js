@@ -21,14 +21,18 @@ export default function AnimatedSpriteExample({ x, isMoving, isAttacking }) {
 
   useEffect(() => {
     // console.log('isMoving', isMoving)
-    if (isMoving) {
-      setAnimationType('WALK')
-    } else if (isAttacking) {
-      setAnimationType('ATTACK')
-    } else {
+    function handleCharacterMove() {
+      if (isAttacking) {
+        setAnimationType('ATTACK')
+        return
+      } else if (isMoving) {
+        setAnimationType('WALK')
+        return
+      }
       setAnimationType('IDLE')
+      return
     }
-
+    handleCharacterMove()
     if (x < 0) {
       setDirection(-1)
     } else {
